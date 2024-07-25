@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Program Kredit Rumah</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      table {
+        width: 50%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      input,
+      select {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h2>Program Kredit Rumah</h2>
+      <hr />
+    <label for="tipeRumah">Tipe Rumah:</label>
+    <select id="tipeRumah">
+        <option value="120000000">Alamanda</option>
+        <option value="130000000">Mawar</option>
+    </select>
+<br>
+    <label for="lamaKredit">Lama Kredit (bulan):</label>
+    <input type="number" id="lamaKredit" value="24">
+      <hr />
+      <button onclick="hitungKredit()">Hitung</button>
+      <button onclick="resetForm()">Reset</button>
+
+      <div id="hasil"></div>
+    </center>
+    <script>
+      function hitungKredit() {
+        const tipeRumah = document.getElementById("tipeRumah").value;
+        const lamaKredit = parseInt(
+          document.getElementById("lamaKredit").value
+        );
+
+        const hargaRumah = parseInt(tipeRumah);
+        const uangMuka = 0.2 * hargaRumah;
+        const sisaKredit = hargaRumah - uangMuka;
+        const angsuran = sisaKredit / lamaKredit;
+
+        // Header tabel
+        let hasilHTML = "<h3>Program Kredit Rumah</h3>";
+        hasilHTML += "<table>";
+        hasilHTML += `<tr><td>Type Rumah</td><td>${
+          document.getElementById("tipeRumah").options[
+            document.getElementById("tipeRumah").selectedIndex
+          ].text
+        }</td></tr>`;
+        hasilHTML += `<tr><td>Harga Rumah</td><td>${hargaRumah.toLocaleString()}</td></tr>`;
+        hasilHTML += `<tr><td>Uang Muka</td><td>${uangMuka.toLocaleString()}</td></tr>`;
+        hasilHTML += `<tr><td>Sisa</td><td>${sisaKredit.toLocaleString()}</td></tr>`;
+        hasilHTML += `<tr><td>Lama Kredit</td><td>${lamaKredit}</td></tr>`;
+        hasilHTML += `<tr><td>Angsuran</td><td>${angsuran.toLocaleString()}</td></tr>`;
+        hasilHTML += "</table>";
+
+        // Tabel angsuran
+        hasilHTML += "<h3>Bulan Angsuran Sisa</h3>";
+        hasilHTML += "<table>";
+        hasilHTML += "<tr><th>Bulan</th><th>Angsuran</th><th>Sisa</th></tr>";
+        let sisa = sisaKredit;
+        for (let i = 1; i <= lamaKredit; i++) {
+          sisa -= angsuran;
+          hasilHTML += `<tr><td>${i}</td><td>${angsuran.toLocaleString()}</td><td>${sisa.toLocaleString()}</td></tr>`;
+        }
+        hasilHTML += "</table>";
+
+        document.getElementById("hasil").innerHTML = hasilHTML;
+      }
+
+      function resetForm() {
+        document.getElementById("tipeRumah").value = "120000000";
+        document.getElementById("lamaKredit").value = "24";
+        document.getElementById("hasil").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Percabangan IF-ELSE 2</title>
+  </head>
+  <body>
+    <form name="fform">
+      <center>
+        <h1>PROGRAM PENJUALAN MOTOR</h1>
+        <hr />
+        <pre> 
+   Merk Motor        <select name="imerk" size="1">
+                 <option value="Honda">Honda</option>
+                 <option value="Yamaha">Yamaha</option>
+                 <option value="Suzuki">Suzuki</option>
+              </select>
+Aksesoris         <input type="checkbox" value="ON" name="Velg">Velg
+                  <input type="checkbox" value="ON" name="Helm">Helm
+                   <input type="checkbox" value="ON" name="Jaket">Jaket
+
+ Cara Pembayaran  <input type="radio" value="Tunai" name="Tunai" checked>Tunai
+                    <input type="radio" value="Kredit" name="Tunai">Kredit 
+ 
+    Harga        <input type="text" size="15" name="oharga" readonly>
+    Diskon       <input type="text" size="15" name="odiskon" readonly>
+    Total Bayar  <input type="text" size="15" name="ototal" readonly>
+</PRE>
+        <hr />
+        <input type="button" value="Hitung" onclick="hitungtotal()" />
+        <input type="reset" value="Ulang" />
+      </center>
+    </form>
+
+
+    <script>
+      function hitungtotal() {
+        var merk = document.fform.imerk.value;
+        var harga = 0;
+        var diskon = 0;
+        var total = 0;
+
+        if (merk == "Honda") {
+          harga = 15000000;
+        } else if (merk == "Yamaha") {
+            harga = 14000000;
+        } else {
+            harga = 13000000;
+        }
+
+        if (document.fform.Tunai.checked == true) {
+          diskon = 0.1 * harga;
+        } else {
+          diskon = 0.15 * harga; 
+        }
+
+        if (document.fform.Velg.checked == true) {
+          harga += 500000;
+        }
+        if (document.fform.Helm.checked == true) {
+          harga += 500000;
+        }
+        if (document.fform.Jaket.checked == true) {
+          harga += 500000;
+        }
+
+        total = harga - diskon;
+        document.fform.oharga.value = formatCurrency(harga);
+        document.fform.odiskon.value = formatCurrency(diskon);
+        document.fform.ototal.value = formatCurrency(total);
+      }
+
+      function formatCurrency(amount) {
+        return "Rp " + amount.toLocaleString("id-ID"); 
+      }
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menghitung Biaya Tagihan Listrik</title>
+    <style>
+table {
+    width: 21%;
+}
+th, td {
+    border: 1px solid black;
+}
+
+    </style>
+</head>
+<body>
+    <center>
+    <h1>Menghitung Biaya Tagihan Listrik </h1>
+    <h1>PLN BANDUNG</h1>
+    <table>
+        <tr>
+            <td><label for="nama">Nama Pelanggan</label></td>
+            <td>:<input type="text" id="nama" ></td> 
+        </tr>
+        <tr>
+            <td><label for="kategori">Kategori</label></td>
+            <td>
+                :<select id="kategori">
+                    <option value="sosial">Sosial</option>
+                    <option value="rumah">Rumah</option>
+                    <option value="industri">Industri</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="pemakaian">Jumlah Pemakaian Listrik</label></td>
+            <td>:<input type="number" id="pemakaian" ></td>
+        </tr>
+    </table>
+    <hr>
+    <button onclick="prosesTagihan()">proses</button>
+    <button onclick="resetForm()">Reset</button>
+
+    <h2>Rincian Tagihan</h2>
+    <table id="rincian"></table>
+</center>
+    <script >
+        function prosesTagihan() {
+    const nama = document.getElementById("nama").value;
+    const kategori = document.getElementById("kategori").value;
+    const pemakaian = parseInt(document.getElementById("pemakaian").value);
+
+    const tarifData = {
+        sosial: { abodemen: 10000, tarifPerKWH: 300, pajak: 0 },
+        rumah: { abodemen: 30000, tarifPerKWH: 500, pajak: 10 },
+        industri: { abodemen: 50000, tarifPerKWH: 1000, pajak: 30 }
+    };
+
+    const tarif = tarifData[kategori];
+    let subtotal = 0;
+    let rincianHTML = `<tr><th>Jumlah</th><th>Tarif per KWH</th><th>Abodemen</th><th>SubTotal</th></tr>`;
+
+    for (let i = 1; i <= pemakaian; i++) {
+        const tarifPerKWHSekarang = tarif.tarifPerKWH + (i - 1) * 500; 
+        const subTotalPerJumlah = tarifPerKWHSekarang * i + tarif.abodemen;
+        subtotal += subTotalPerJumlah;
+        rincianHTML += `<tr><td>${i}</td><td>${tarifPerKWHSekarang}</td><td>${tarif.abodemen}</td><td>${subTotalPerJumlah}</td></tr>`;
+    }
+
+    const pajak = (tarif.pajak / 100) * subtotal;
+    const total = subtotal + pajak;
+
+    rincianHTML += `<tr><td colspan="3">Subtotal</td><td>${subtotal}</td></tr>`;
+    rincianHTML += `<tr><td colspan="3">Pajak</td><td>${pajak}</td></tr>`;
+    rincianHTML += `<tr><td colspan="3">Total</td><td>${total}</td></tr>`;
+
+    document.getElementById("rincian").innerHTML = rincianHTML;
+}
+
+
+function resetForm() {
+    document.getElementById("nama").value = "";
+    document.getElementById("kategori").value = "sosial";
+    document.getElementById("pemakaian").value = "";
+    document.getElementById("rincian").innerHTML = ""; 
+}
+
+    </script>
+</body>
+</html>
